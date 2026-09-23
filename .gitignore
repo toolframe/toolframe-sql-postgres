@@ -1,0 +1,15 @@
+/.venv/
+/dist/
+/build/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+.env
+.env.*
+
+# Local working documents, issue state, and development worktrees.
+/.local/
+/.issues/
+/.worktrees/
