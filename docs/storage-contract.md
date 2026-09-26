@@ -70,5 +70,6 @@ from a lost network acknowledgement. Receipts are retained without automatic
 pruning in this release.
 
 These contracts support one Core per application. PostgreSQL-backed plugin data
-alone does not coordinate Core workers, transient browser/MCP contexts or Core's
-SQLite journal across replicas.
+alone does not coordinate Core workers or transient browser/MCP contexts across
+replicas. Core's independent journal can use SQLite or, from Core 0.6, a dedicated
+PostgreSQL database. It is not part of the provider's database or backups.

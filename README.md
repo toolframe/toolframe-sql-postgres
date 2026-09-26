@@ -5,9 +5,11 @@ Auth, MCP Auth and OIDC Auth use a separate schema per plugin inside one databas
 per application environment. Database access is loaded **only from the runtime
 process environment**; credentials do not belong in `toolframe.toml`.
 
-This release requires Toolframe SDK 0.3 and Core 0.5.3. Run one Core per application.
-Core still keeps its management SQLite database and private keys in the application
-home. PostgreSQL storage does not make Core stateless or enable multiple replicas.
+This release requires Toolframe SDK 0.3 and Core 0.5.3 or 0.6. Run one Core per
+application. Core 0.6 can separately store its management journal in a dedicated
+PostgreSQL database; SQLite remains the default. Configuration, private keys and
+artifacts still need a persistent application home. PostgreSQL storage does not
+make Core stateless or enable multiple replicas.
 Existing SQLite data is not imported. Plugins are trusted Python code.
 
 ## Quick start
@@ -26,7 +28,7 @@ uv build --wheel --no-sources --out-dir ./wheelhouse ./toolframe-core
 uv build --wheel --no-sources --out-dir ./wheelhouse ./toolframe-storage-postgres
 uv venv --python 3.14 .venv
 uv pip install --python .venv/bin/python --find-links ./wheelhouse \
-  toolframe-core==0.5.3 toolframe-storage-postgres==0.1.0
+  toolframe-core==0.6.0 toolframe-storage-postgres==0.1.0
 .venv/bin/toolframe-core --home ./app init
 ```
 
