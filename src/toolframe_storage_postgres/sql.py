@@ -119,7 +119,15 @@ class Guard(Visitor):
             raise ValueError("Qualified operators are outside the SQL contract")
         if isinstance(node, ast.FuncCall):
             parts = [part.sval for part in node.funcname]
-            if len(parts) != 1 or parts[0].lower() not in FUNCTIONS:
+            # PostgreSQL lowers standard LIKE ... ESCAPE into this qualified
+            # builtin during parsing. It only transforms the search pattern;
+            # children still pass through the guard (including bound functions).
+            like_escape = (
+                parts == ["pg_catalog", "like_escape"] and len(node.args or ()) == 2
+            )
+            if not like_escape and (
+                len(parts) != 1 or parts[0].lower() not in FUNCTIONS
+            ):
                 raise ValueError("Function is outside the managed SQL contract")
         if isinstance(node, ast.TypeName):
             parts = [part.sval for part in node.names]

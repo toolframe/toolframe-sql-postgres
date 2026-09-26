@@ -37,8 +37,9 @@ PostgreSQL `execute` returns `lastrowid: null`; use `RETURNING` for generated ID
   Quotes, doubled quotes and comments are handled before PostgreSQL AST parsing.
   Dollar placeholders/quoting, escaped string literals and JSON question-mark
   operators are outside this contract; bind values as parameters.
-- A bounded set of ordinary builtins, defined in `sql.py`; schema-qualified
-  functions, catalog/private tables, role/session commands, SELECT INTO, explicit
+- A bounded set of ordinary builtins, defined in `sql.py`. Standard `LIKE ... ESCAPE`
+  is supported, including the parser-generated `pg_catalog.like_escape` builtin.
+  Other schema-qualified functions, catalog/private tables, role/session commands, SELECT INTO, explicit
   row locks and write CTEs in read-only queries are rejected.
 - Migrations accept transactional store-local table/index CREATE/ALTER/DROP and
   data mutations. Arbitrary functions, extensions, schema changes, privileges,
