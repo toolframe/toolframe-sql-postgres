@@ -60,7 +60,15 @@ enabled = true
 find_links = ["../wheelhouse"]
 ```
 
-Enable only one storage provider. Build/install the matching business plugins
+This configuration sends every SQL consumer to PostgreSQL. Core builds with
+multiple SQL provider support can also run SQLite, using an explicit per-plugin
+override such as `"entry-register/storage" = "storage-sqlite"` in `[bindings]`.
+Choose bindings before initializing stores: changing a retained store's provider
+is rejected and does not copy data. Earlier Core builds require one enabled
+storage provider. The package version alone does not identify unreleased Core
+changes; build the matching Core revision when using mixed providers.
+
+Build/install the matching business plugins
 before enabling them: Entry Register 0.3, Auth 0.2, MCP Auth 0.2 and OIDC Auth 0.2.
 Each store owner must be provisioned before Core starts its plugin.
 
