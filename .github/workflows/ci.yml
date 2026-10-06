@@ -31,35 +31,35 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: ${{ vars.TOOLFRAME_REPOSITORY_OWNER || github.repository_owner }}/toolframe-sdk
-          ref: a9000ab6ad9743a8f68b5ae3ef7c54fdbf15d6de
+          ref: 871416a9f9cbcfa79298235781ff193e1ad08a12
           path: toolframe-sdk
           persist-credentials: false
       - name: Check out toolframe-auth
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: ${{ vars.TOOLFRAME_REPOSITORY_OWNER || github.repository_owner }}/toolframe-auth
-          ref: f53f050ea6a9a3d788a0e4334e2010e2aa969c73
+          ref: a5709e44440d62af730b994ed39c799e96d35691
           path: toolframe-auth
           persist-credentials: false
       - name: Check out toolframe-mcp-auth
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: ${{ vars.TOOLFRAME_REPOSITORY_OWNER || github.repository_owner }}/toolframe-mcp-auth
-          ref: 1278bbdeb4b994f00b5f48ccae38b97f1cbd9b63
+          ref: 7088824cd38ae55bc72c297102f5fb099dad71fd
           path: toolframe-mcp-auth
           persist-credentials: false
       - name: Check out toolframe-oidc-auth
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: ${{ vars.TOOLFRAME_REPOSITORY_OWNER || github.repository_owner }}/toolframe-oidc-auth
-          ref: 8f76377dbf25b82ec718a0a0fbb1aecbad43b5da
+          ref: 5459fea8a44fb99440dcee2a9e4e11acb87189b2
           path: toolframe-oidc-auth
           persist-credentials: false
       - name: Check out toolframe-demo-entry-register
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: ${{ vars.TOOLFRAME_REPOSITORY_OWNER || github.repository_owner }}/toolframe-demo-entry-register
-          ref: f09d7476aa37399f276fa50f28833a4489e4d422
+          ref: d1a83413aaf986a4d304528fa26a85b6841829e4
           path: toolframe-demo-entry-register
           persist-credentials: false
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
