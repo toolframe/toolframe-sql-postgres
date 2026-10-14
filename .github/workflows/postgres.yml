@@ -1,0 +1,93 @@
+name: PostgreSQL integration
+on:
+  workflow_dispatch:
+  workflow_call:
+permissions:
+  contents: read
+jobs:
+  storage:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:16.14
+        env:
+          POSTGRES_PASSWORD: disposable-ci-database
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready --health-interval 5s
+          --health-timeout 5s --health-retries 12
+    env:
+      TOOLFRAME_POSTGRES_TEST_ADMIN_DSN: postgresql://postgres:disposable-ci-database@127.0.0.1:5432/postgres
+    steps:
+      - name: Check out provider
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          path: toolframe-storage-postgres
+          persist-credentials: false
+      - name: Check out toolframe-sdk
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: ${{ vars.TOOLFRAME_REPOSITORY_OWNER || github.repository_owner }}/toolframe-sdk
+          token: ${{ secrets.TOOLFRAME_READ_TOKEN || github.token }}
+          ref: ef91b609137a5fe7bae8e0c893e74b096ff06ffe
+          path: toolframe-sdk
+          persist-credentials: false
+      - name: Check out toolframe-auth
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: ${{ vars.TOOLFRAME_REPOSITORY_OWNER || github.repository_owner }}/toolframe-auth
+          token: ${{ secrets.TOOLFRAME_READ_TOKEN || github.token }}
+          ref: 76394ae985c7f06e65f83c6f572cddab1402f34a
+          path: toolframe-auth
+          persist-credentials: false
+      - name: Check out toolframe-mcp-auth
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: ${{ vars.TOOLFRAME_REPOSITORY_OWNER || github.repository_owner }}/toolframe-mcp-auth
+          token: ${{ secrets.TOOLFRAME_READ_TOKEN || github.token }}
+          ref: 1c259ec56ded91a22f3bee173e805356039b5183
+          path: toolframe-mcp-auth
+          persist-credentials: false
+      - name: Check out toolframe-oidc-auth
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: ${{ vars.TOOLFRAME_REPOSITORY_OWNER || github.repository_owner }}/toolframe-oidc-auth
+          token: ${{ secrets.TOOLFRAME_READ_TOKEN || github.token }}
+          ref: a8b8c159477ec8c51c61a32c5d43a5e9f3086b31
+          path: toolframe-oidc-auth
+          persist-credentials: false
+      - name: Check out toolframe-demo-entry-register
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: ${{ vars.TOOLFRAME_REPOSITORY_OWNER || github.repository_owner }}/toolframe-demo-entry-register
+          token: ${{ secrets.TOOLFRAME_READ_TOKEN || github.token }}
+          ref: e5c220c5a0a8a70e93f34e0d30c4e3f05d2b0f3e
+          path: toolframe-demo-entry-register
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.14.7'
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7
+        with:
+          version: '0.12.8'
+          enable-cache: false
+      - name: Install matching PostgreSQL client tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client-16
+          echo 'TOOLFRAME_POSTGRES_PG_DUMP=/usr/lib/postgresql/16/bin/pg_dump' >> "$GITHUB_ENV"
+          echo 'TOOLFRAME_POSTGRES_PG_RESTORE=/usr/lib/postgresql/16/bin/pg_restore' >> "$GITHUB_ENV"
+      - name: Test real storage and first-party consumers
+        working-directory: toolframe-storage-postgres
+        run: |
+          uv sync --locked --group dev --group compatibility
+          uv run --no-sync python scripts/check.py
+          uv build --no-sources
+      - name: Retain distributions
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: postgres-distributions
+          path: toolframe-storage-postgres/dist/*
+          if-no-files-found: error

@@ -17,18 +17,12 @@ Existing SQLite data is not imported. Plugins are trusted Python code.
 Use Python 3.14+, PostgreSQL 16+, and `pg_dump` / `pg_restore` with the **same major
 version** as the server. PostgreSQL 16 is the integration-test baseline.
 
-Build matching SDK, Core and plugin wheels from a directory containing the
-coordinated repository checkouts:
+Install the host and provider CLI from PyPI:
 
 ```sh
-# Local development: build the runtime wheels into one directory.
-uv build --wheel --no-sources --out-dir ./wheelhouse ./toolframe-sdk
-uv build --wheel --no-sources --out-dir ./wheelhouse ./fastapi-cordis
-uv build --wheel --no-sources --out-dir ./wheelhouse ./toolframe-core
-uv build --wheel --no-sources --out-dir ./wheelhouse ./toolframe-storage-postgres
-uv venv --python 3.14 .venv
-uv pip install --python .venv/bin/python --find-links ./wheelhouse \
-  toolframe-core==0.6.0 toolframe-storage-postgres==0.1.0
+uv venv --python 3.14.7 .venv
+uv pip install --python .venv/bin/python \
+  toolframe-core==0.6.1 toolframe-storage-postgres==0.1.0
 .venv/bin/toolframe-core --home ./app init
 ```
 
@@ -45,19 +39,15 @@ The CLI output file contains generated runtime credentials and must remain priva
 unset TOOLFRAME_POSTGRES_SETUP_DSN
 ```
 
-Add the provider to `app/toolframe.toml`, using the wheel's actual path and keeping
-its directory in `packages.find_links` so SDK 0.3 can be resolved:
+Add the provider to `app/toolframe.toml`:
 
 ```toml
 [plugins.storage-postgres]
-source = "../wheelhouse/toolframe_storage_postgres-0.1.0-py3-none-any.whl"
+source = "pypi:toolframe-storage-postgres==0.1.0"
 enabled = true
 
 [bindings]
 "toolframe.storage.sql" = "storage-postgres"
-
-[packages]
-find_links = ["../wheelhouse"]
 ```
 
 This configuration sends every SQL consumer to PostgreSQL. Core builds with
@@ -68,7 +58,7 @@ is rejected and does not copy data. Earlier Core builds require one enabled
 storage provider. The package version alone does not identify multiple-provider
 support; build the matching Core revision when using mixed providers.
 
-Build/install the matching business plugins
+Install the matching business plugins
 before enabling them: Entry Register 0.3, Auth 0.2, MCP Auth 0.2 and OIDC Auth 0.2.
 Each store owner must be provisioned before Core starts its plugin.
 
@@ -86,6 +76,8 @@ inject the same runtime values directly; the provider does not read that file.
 - [SQL and isolation contract](docs/storage-contract.md)
 - [Development and verification](docs/development.md)
 - [Domain glossary](docs/glossary.md) and [architecture decisions](docs/adr/0001-plugin-storage-boundary.md)
+
+For release validation and Trusted Publisher setup, see [releasing](docs/releasing.md).
 
 ## License
 
