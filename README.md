@@ -17,8 +17,8 @@ Existing SQLite data is not imported. Plugins are trusted Python code.
 Use Python 3.14+, PostgreSQL 16+, and `pg_dump` / `pg_restore` with the **same major
 version** as the server. PostgreSQL 16 is the integration-test baseline.
 
-The coordinated SDK/Core/plugin changes must be built together while they are
-unreleased. From a directory containing those matching repository checkouts:
+Build matching SDK, Core and plugin wheels from a directory containing the
+coordinated repository checkouts:
 
 ```sh
 # Local development: build the runtime wheels into one directory.
@@ -65,8 +65,8 @@ multiple SQL provider support can also run SQLite, using an explicit per-plugin
 override such as `"entry-register/storage" = "storage-sqlite"` in `[bindings]`.
 Choose bindings before initializing stores: changing a retained store's provider
 is rejected and does not copy data. Earlier Core builds require one enabled
-storage provider. The package version alone does not identify unreleased Core
-changes; build the matching Core revision when using mixed providers.
+storage provider. The package version alone does not identify multiple-provider
+support; build the matching Core revision when using mixed providers.
 
 Build/install the matching business plugins
 before enabling them: Entry Register 0.3, Auth 0.2, MCP Auth 0.2 and OIDC Auth 0.2.
