@@ -22,7 +22,7 @@ Install the host and provider CLI from PyPI:
 ```sh
 uv venv --python 3.14.7 .venv
 uv pip install --python .venv/bin/python \
-  toolframe-core==0.6.1 toolframe-storage-postgres==0.1.0
+  toolframe-core==0.6.2 toolframe-storage-postgres==0.1.0
 .venv/bin/toolframe-core --home ./app init
 ```
 
