@@ -1,12 +1,12 @@
 # Toolframe PostgreSQL storage
 
-`storage-postgres` stores Toolframe plugin data in PostgreSQL. Entry Register,
+`sql-postgres` stores Toolframe plugin data in PostgreSQL. Entry Register,
 Auth, MCP Auth and OIDC Auth use a separate schema per plugin inside one database
 per application environment. Database access is loaded **only from the runtime
 process environment**; credentials do not belong in `toolframe.toml`.
 
-This release requires Toolframe SDK 0.3 and Core 0.5.3 or 0.6. Run one Core per
-application. Core 0.6 can separately store its management journal in a dedicated
+This release requires Toolframe SDK 0.4 and Core 0.7. Run one Core per
+application. Core 0.7 can separately store its management journal in a dedicated
 PostgreSQL database; SQLite remains the default. Configuration, private keys and
 artifacts still need a persistent application home. PostgreSQL storage does not
 make Core stateless or enable multiple replicas.
@@ -22,7 +22,7 @@ Install the host and provider CLI from PyPI:
 ```sh
 uv venv --python 3.14.7 .venv
 uv pip install --python .venv/bin/python \
-  toolframe-core==0.6.2 toolframe-storage-postgres==0.1.0
+  toolframe-core==0.7.0 toolframe-sql-postgres==0.2.0
 .venv/bin/toolframe-core --home ./app init
 ```
 
@@ -42,24 +42,24 @@ unset TOOLFRAME_POSTGRES_SETUP_DSN
 Add the provider to `app/toolframe.toml`:
 
 ```toml
-[plugins.storage-postgres]
-source = "pypi:toolframe-storage-postgres==0.1.0"
+[plugins.sql-postgres]
+source = "pypi:toolframe-sql-postgres==0.2.0"
 enabled = true
 
 [bindings]
-"toolframe.storage.sql" = "storage-postgres"
+"toolframe.sql" = "sql-postgres"
 ```
 
 This configuration sends every SQL consumer to PostgreSQL. Core builds with
 multiple SQL provider support can also run SQLite, using an explicit per-plugin
-override such as `"entry-register/storage" = "storage-sqlite"` in `[bindings]`.
+override such as `"entry-register/sql" = "sql-sqlite"` in `[bindings]`.
 Choose bindings before initializing stores: changing a retained store's provider
 is rejected and does not copy data. Earlier Core builds require one enabled
 storage provider. The package version alone does not identify multiple-provider
 support; build the matching Core revision when using mixed providers.
 
 Install the matching business plugins
-before enabling them: Entry Register 0.3, Auth 0.2, MCP Auth 0.2 and OIDC Auth 0.2.
+before enabling them: Entry Register 0.4, Auth 0.3, MCP Auth 0.3 and OIDC Auth 0.3.
 Each store owner must be provisioned before Core starts its plugin.
 
 ```sh

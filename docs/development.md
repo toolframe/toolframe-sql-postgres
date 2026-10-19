@@ -1,7 +1,7 @@
 # Development and verification
 
-Use matching sibling checkouts of SDK 0.3, Auth/MCP Auth/OIDC Auth 0.2 and Entry
-Register 0.3. The committed lockfile's development sources are relative to this
+Use matching sibling checkouts of SDK 0.4, Auth/MCP Auth/OIDC Auth 0.3 and Entry
+Register 0.4. The committed lockfile's development sources are relative to this
 layout; when using independent Git worktrees, materialize a separate test workspace
 or build matching wheels and install them with `uv pip install --no-sources`.
 Do not accidentally resolve dependencies from another task's checkout.

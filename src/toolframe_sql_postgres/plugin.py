@@ -29,8 +29,8 @@ from .backup import create_backup
 from .config import Settings
 from .sql import migration_statements, prepare
 
-SQL_SERVICE = "toolframe.storage.sql"
-ADMIN_SERVICE = "toolframe.storage.admin"
+SQL_SERVICE = "toolframe.sql"
+ADMIN_SERVICE = "toolframe.sql.admin"
 
 
 def encoded(value):
@@ -557,11 +557,11 @@ class PostgresProvider(Plugin):
 
 
 plugin = PluginDefinition(
-    id="storage-postgres",
+    id="sql-postgres",
     runtime_validation="separate_application",
     kind="provider",
-    provider_kind="storage",
-    factory="toolframe_storage_postgres.plugin:PostgresProvider",
+    provider_kind="sql",
+    factory="toolframe_sql_postgres.plugin:PostgresProvider",
     authorization=AuthorizationSpec(),
     services={
         SQL_SERVICE: ServiceSpec(

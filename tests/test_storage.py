@@ -9,8 +9,8 @@ from conftest import caller, cleanup_database, schema
 from psycopg import sql
 from toolframe_sdk import Migration, PluginError
 
-from toolframe_storage_postgres.plugin import ADMIN_SERVICE, SQL_SERVICE
-from toolframe_storage_postgres.provision import provision
+from toolframe_sql_postgres.plugin import ADMIN_SERVICE, SQL_SERVICE
+from toolframe_sql_postgres.provision import provision
 
 
 async def invoke(storage, method, **params):
@@ -196,7 +196,7 @@ async def test_migration_backup_and_history(storage):
             {"owner": "alpha", "schema": upgrade, "plan_id": plan["plan_id"]},
         )
         assert result["committed"]
-        from toolframe_storage_postgres.backup import verify_backup
+        from toolframe_sql_postgres.backup import verify_backup
 
         assert verify_backup(result["backup"])["application_id"] == "application-1"
         assert (await storage.invoke(ADMIN_SERVICE, "inspect", {"owner": "alpha"}))[
@@ -238,7 +238,7 @@ def test_setup_is_idempotent_and_refuses_unowned_database(database):
 
 
 def test_environment_is_required_and_not_taken_from_plugin_config(monkeypatch):
-    from toolframe_storage_postgres.config import Settings
+    from toolframe_sql_postgres.config import Settings
 
     monkeypatch.delenv("TOOLFRAME_POSTGRES_DSN", raising=False)
     with pytest.raises(PluginError, match="runtime environment"):
@@ -250,8 +250,8 @@ async def test_database_backup_restores_pre_migration_data_and_grants(
 ):
     from toolframe_sdk import RuntimeContext
 
-    from toolframe_storage_postgres.cli import restore
-    from toolframe_storage_postgres.plugin import PostgresProvider
+    from toolframe_sql_postgres.cli import restore
+    from toolframe_sql_postgres.plugin import PostgresProvider
 
     with caller():
         await invoke(
@@ -288,7 +288,7 @@ async def test_database_backup_restores_pre_migration_data_and_grants(
         restored = PostgresProvider(
             RuntimeContext(
                 None,
-                plugin_id="storage-postgres",
+                plugin_id="sql-postgres",
                 generation="restored",
                 state_directory=tmp_path / "restored",
             )
@@ -435,7 +435,7 @@ async def test_unknown_commit_can_be_reconciled_by_mutation_id(storage, monkeypa
 def test_failed_setup_removes_only_new_resources(database, monkeypatch):
     import importlib
 
-    module = importlib.import_module("toolframe_storage_postgres.provision")
+    module = importlib.import_module("toolframe_sql_postgres.provision")
     original = module.role
     target = "tf_failed_" + uuid.uuid4().hex
 
@@ -457,7 +457,7 @@ def test_failed_setup_removes_only_new_resources(database, monkeypatch):
 
 
 async def test_backup_version_mismatch_prevents_migration(storage, monkeypatch):
-    from toolframe_storage_postgres import backup
+    from toolframe_sql_postgres import backup
 
     async def wrong_version(program):
         return 1
