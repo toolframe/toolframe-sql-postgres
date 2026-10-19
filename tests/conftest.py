@@ -9,9 +9,9 @@ import pytest
 from psycopg import sql
 from toolframe_sdk import Migration, RuntimeContext, StoreSchema, call_context
 
-from toolframe_storage_postgres.config import names
-from toolframe_storage_postgres.plugin import ADMIN_SERVICE, PostgresProvider
-from toolframe_storage_postgres.provision import provision
+from toolframe_sql_postgres.config import names
+from toolframe_sql_postgres.plugin import ADMIN_SERVICE, PostgresProvider
+from toolframe_sql_postgres.provision import provision
 
 
 class PrivateDatabase(dict):
@@ -105,7 +105,7 @@ async def storage(database, tmp_path):
     provider = PostgresProvider(
         RuntimeContext(
             None,
-            plugin_id="storage-postgres",
+            plugin_id="sql-postgres",
             generation="provider-generation",
             state_directory=tmp_path,
         )

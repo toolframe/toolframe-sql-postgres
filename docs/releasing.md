@@ -1,6 +1,6 @@
-# Releasing toolframe-storage-postgres
+# Releasing toolframe-sql-postgres
 
-The distribution name is `toolframe-storage-postgres`; its current version is `0.1.0`.
+The distribution name is `toolframe-sql-postgres`. The version is defined in `pyproject.toml`.
 Release tags must exactly match `v<project.version>`. Ordinary CI never uploads
 packages. The manual `publish.yml` workflow reruns validation and publishes only
 artifacts produced by that successful run.
@@ -19,7 +19,7 @@ metadata and licenses, runs Ruff and package tests against an installed wheel,
 and installs each distribution into a separate fresh consumer environment.
 Optional database/service integrations require their documented fixtures.
 
-Publish `toolframe-sdk==0.3.0` first. The coordinated order and native CLI channels are documented in
+Publish `toolframe-sdk==0.4.0` first. The coordinated order and native CLI channels are documented in
 [Toolframe's release guide](https://github.com/toolframe/toolframe-core/blob/main/docs/releasing.md).
 
 ## Trusted Publishers
@@ -29,9 +29,9 @@ package index, configure a normal or pending Trusted Publisher with these values
 
 | Field | Value |
 | --- | --- |
-| Project | `toolframe-storage-postgres` |
+| Project | `toolframe-sql-postgres` |
 | GitHub owner | `toolframe` |
-| GitHub repository | `toolframe-storage-postgres` |
+| GitHub repository | `toolframe-sql-postgres` |
 | Workflow filename | `publish.yml` |
 | Environment | `testpypi` or `pypi`, matching the index |
 
@@ -58,7 +58,7 @@ After PyPI publication, verify a clean installation:
 
 ```sh
 uv venv --python 3.14.7 build/consumer
-uv pip install --python build/consumer/bin/python 'toolframe-storage-postgres==0.1.0'
+uv pip install --python build/consumer/bin/python 'toolframe-sql-postgres==0.2.0'
 uv pip check --python build/consumer/bin/python
 ```
 

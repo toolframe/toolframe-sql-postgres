@@ -24,14 +24,14 @@ jobs:
       - name: Check out provider
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          path: toolframe-storage-postgres
+          path: toolframe-sql-postgres
           persist-credentials: false
       - name: Check out toolframe-sdk
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: ${{ vars.TOOLFRAME_REPOSITORY_OWNER || github.repository_owner }}/toolframe-sdk
           token: ${{ secrets.TOOLFRAME_READ_TOKEN || github.token }}
-          ref: ef91b609137a5fe7bae8e0c893e74b096ff06ffe
+          ref: 2cd153ec36c585a9adb5ad566effc2985d9e222d
           path: toolframe-sdk
           persist-credentials: false
       - name: Check out toolframe-auth
@@ -39,7 +39,7 @@ jobs:
         with:
           repository: ${{ vars.TOOLFRAME_REPOSITORY_OWNER || github.repository_owner }}/toolframe-auth
           token: ${{ secrets.TOOLFRAME_READ_TOKEN || github.token }}
-          ref: 76394ae985c7f06e65f83c6f572cddab1402f34a
+          ref: f43c623cafb1483f3387935d7ef2690ca52088c9
           path: toolframe-auth
           persist-credentials: false
       - name: Check out toolframe-mcp-auth
@@ -47,7 +47,7 @@ jobs:
         with:
           repository: ${{ vars.TOOLFRAME_REPOSITORY_OWNER || github.repository_owner }}/toolframe-mcp-auth
           token: ${{ secrets.TOOLFRAME_READ_TOKEN || github.token }}
-          ref: 1c259ec56ded91a22f3bee173e805356039b5183
+          ref: 37b53ac0b37637c953cf5e40e59b5dcde8ab2c4b
           path: toolframe-mcp-auth
           persist-credentials: false
       - name: Check out toolframe-oidc-auth
@@ -55,7 +55,7 @@ jobs:
         with:
           repository: ${{ vars.TOOLFRAME_REPOSITORY_OWNER || github.repository_owner }}/toolframe-oidc-auth
           token: ${{ secrets.TOOLFRAME_READ_TOKEN || github.token }}
-          ref: a8b8c159477ec8c51c61a32c5d43a5e9f3086b31
+          ref: 5d88289871c7e961216536ddde812510e319a7fe
           path: toolframe-oidc-auth
           persist-credentials: false
       - name: Check out toolframe-demo-entry-register
@@ -63,7 +63,7 @@ jobs:
         with:
           repository: ${{ vars.TOOLFRAME_REPOSITORY_OWNER || github.repository_owner }}/toolframe-demo-entry-register
           token: ${{ secrets.TOOLFRAME_READ_TOKEN || github.token }}
-          ref: e5c220c5a0a8a70e93f34e0d30c4e3f05d2b0f3e
+          ref: 638e2163bd1f50f3715e05b418ac9095b4003513
           path: toolframe-demo-entry-register
           persist-credentials: false
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
@@ -80,7 +80,7 @@ jobs:
           echo 'TOOLFRAME_POSTGRES_PG_DUMP=/usr/lib/postgresql/16/bin/pg_dump' >> "$GITHUB_ENV"
           echo 'TOOLFRAME_POSTGRES_PG_RESTORE=/usr/lib/postgresql/16/bin/pg_restore' >> "$GITHUB_ENV"
       - name: Test real storage and first-party consumers
-        working-directory: toolframe-storage-postgres
+        working-directory: toolframe-sql-postgres
         run: |
           uv sync --locked --group dev --group compatibility
           uv run --no-sync python scripts/check.py
@@ -89,5 +89,5 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: postgres-distributions
-          path: toolframe-storage-postgres/dist/*
+          path: toolframe-sql-postgres/dist/*
           if-no-files-found: error

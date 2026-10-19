@@ -9,7 +9,7 @@ cluster-wide. Restore preserves schema names and creates new destination roles.
 
 ## SDK and dialects
 
-SDK 0.3 retains `Migration.sql` as the original SQLite SQL. Its checksum is
+SDK 0.4 retains `Migration.sql` as the original SQLite SQL. Its checksum is
 unchanged. Plugins declare PostgreSQL variants explicitly:
 
 ```python
@@ -25,7 +25,7 @@ SQL and validates the full history before applying changes. This is not a genera
 SQLite translator. In particular PostgreSQL `REAL` has different precision from
 SQLite `REAL`; first-party timestamp/value columns use `DOUBLE PRECISION`.
 
-`StorageClient.execute_returning("INSERT ... RETURNING id", parameters)` returns
+`SqlClient.execute_returning("INSERT ... RETURNING id", parameters)` returns
 `{"rows": [{"id": 1}], "rowcount": 1}` on both SQLite and PostgreSQL.
 PostgreSQL `execute` returns `lastrowid: null`; use `RETURNING` for generated IDs.
 

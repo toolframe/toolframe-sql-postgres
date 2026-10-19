@@ -1,7 +1,7 @@
 import pytest
 from toolframe_sdk import PluginError
 
-from toolframe_storage_postgres.sql import prepare
+from toolframe_sql_postgres.sql import prepare
 
 
 def test_parameterized_literal_search_accepts_parser_generated_escape_function():

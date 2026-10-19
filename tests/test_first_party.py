@@ -11,7 +11,7 @@ from urllib.parse import parse_qs, urlencode, urlsplit
 import pytest
 from toolframe_sdk import PluginError, Principal, RuntimeContext, call_context
 
-from toolframe_storage_postgres.plugin import (
+from toolframe_sql_postgres.plugin import (
     ADMIN_SERVICE,
     SQL_SERVICE,
     PostgresProvider,
@@ -74,7 +74,7 @@ class Peer:
         current = call_context.get() or {}
         with actor(self.owner, current.get("principal")):
             return await self.router[params["alias"]].invoke(
-                SQL_SERVICE if params["alias"] == "storage" else "toolframe.auth",
+                SQL_SERVICE if params["alias"] == "sql" else "toolframe.auth",
                 params["method"],
                 params["params"],
             )
@@ -85,9 +85,9 @@ async def application(database, tmp_path):
     storage = PostgresProvider(
         RuntimeContext(
             None,
-            plugin_id="storage-postgres",
+            plugin_id="sql-postgres",
             generation="one",
-            state_directory=tmp_path / "storage",
+            state_directory=tmp_path / "sql",
         )
     )
     await storage.activate()
@@ -104,7 +104,7 @@ async def application(database, tmp_path):
                     "ensure_store",
                     {"owner": definition.id, "schema": definition.store.model_dump()},
                 )
-        router = {"storage": storage}
+        router = {"sql": storage}
 
         def context(owner, **kwargs):
             return RuntimeContext(
