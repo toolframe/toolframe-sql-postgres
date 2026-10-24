@@ -4,14 +4,14 @@ build-backend = "hatchling.build"
 
 [project]
 name = "toolframe-sql-postgres"
-version = "0.2.0"
+version = "0.2.1"
 description = "Managed PostgreSQL stores for Toolframe plugins"
 readme = "README.md"
 license = "Apache-2.0"
 license-files = ["LICENSE", "NOTICE"]
 authors = [{ name = "byfb", email = "62798989+byfb@users.noreply.github.com" }]
 requires-python = ">=3.14"
-dependencies = ["toolframe-sdk==0.4.0", "psycopg[binary]>=3.3,<4", "pglast==8.4"]
+dependencies = ["toolframe-sdk>=0.4,<0.5", "psycopg[binary]>=3.3,<4", "pglast==8.4"]
 
 [project.urls]
 Homepage = "https://github.com/toolframe/toolframe-sql-postgres"
@@ -27,7 +27,7 @@ toolframe-postgres = "toolframe_sql_postgres.cli:main"
 
 [dependency-groups]
 dev = ["pytest>=8,<10", "pytest-asyncio>=1,<2", "ruff>=0.12,<1"]
-compatibility = ["toolframe-auth==0.3.0", "toolframe-mcp-auth==0.3.0", "toolframe-oidc-auth==0.3.0", "toolframe-demo-entry-register==0.4.0"]
+compatibility = ["toolframe-auth==0.3.1", "toolframe-mcp-auth==0.3.1", "toolframe-oidc-auth==0.3.1", "toolframe-demo-entry-register==0.4.1"]
 
 [tool.uv.sources]
 toolframe-sdk = { path = "../toolframe-sdk", editable = true }

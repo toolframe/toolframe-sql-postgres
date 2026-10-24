@@ -31,7 +31,7 @@ jobs:
         with:
           repository: ${{ vars.TOOLFRAME_REPOSITORY_OWNER || github.repository_owner }}/toolframe-sdk
           token: ${{ secrets.TOOLFRAME_READ_TOKEN || github.token }}
-          ref: 2cd153ec36c585a9adb5ad566effc2985d9e222d
+          ref: 539ced4dbdf9e303ec0f0205a35d65287a480b2a
           path: toolframe-sdk
           persist-credentials: false
       - name: Check out toolframe-auth
@@ -39,7 +39,7 @@ jobs:
         with:
           repository: ${{ vars.TOOLFRAME_REPOSITORY_OWNER || github.repository_owner }}/toolframe-auth
           token: ${{ secrets.TOOLFRAME_READ_TOKEN || github.token }}
-          ref: f43c623cafb1483f3387935d7ef2690ca52088c9
+          ref: b7c26f0e0681ef4f707024e21219bbcf4533e8f8
           path: toolframe-auth
           persist-credentials: false
       - name: Check out toolframe-mcp-auth
@@ -47,7 +47,7 @@ jobs:
         with:
           repository: ${{ vars.TOOLFRAME_REPOSITORY_OWNER || github.repository_owner }}/toolframe-mcp-auth
           token: ${{ secrets.TOOLFRAME_READ_TOKEN || github.token }}
-          ref: 37b53ac0b37637c953cf5e40e59b5dcde8ab2c4b
+          ref: 86866e270a71e418466ff1b26f471d88b281709a
           path: toolframe-mcp-auth
           persist-credentials: false
       - name: Check out toolframe-oidc-auth
@@ -55,7 +55,7 @@ jobs:
         with:
           repository: ${{ vars.TOOLFRAME_REPOSITORY_OWNER || github.repository_owner }}/toolframe-oidc-auth
           token: ${{ secrets.TOOLFRAME_READ_TOKEN || github.token }}
-          ref: 5d88289871c7e961216536ddde812510e319a7fe
+          ref: a5c26231283b4b54026c28e2285f4f2b2caa069a
           path: toolframe-oidc-auth
           persist-credentials: false
       - name: Check out toolframe-demo-entry-register
@@ -63,7 +63,7 @@ jobs:
         with:
           repository: ${{ vars.TOOLFRAME_REPOSITORY_OWNER || github.repository_owner }}/toolframe-demo-entry-register
           token: ${{ secrets.TOOLFRAME_READ_TOKEN || github.token }}
-          ref: 638e2163bd1f50f3715e05b418ac9095b4003513
+          ref: f031017529c96a3c29e63565c2ea0149771fab9c
           path: toolframe-demo-entry-register
           persist-credentials: false
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97

@@ -605,7 +605,7 @@ wheels = [
 
 [[package]]
 name = "toolframe-auth"
-version = "0.3.0"
+version = "0.3.1"
 source = { editable = "../toolframe-auth" }
 dependencies = [
     { name = "toolframe-sdk" },
@@ -624,7 +624,7 @@ dev = [
 
 [[package]]
 name = "toolframe-demo-entry-register"
-version = "0.4.0"
+version = "0.4.1"
 source = { editable = "../toolframe-demo-entry-register" }
 dependencies = [
     { name = "toolframe-sdk" },
@@ -647,7 +647,7 @@ dev = [
 
 [[package]]
 name = "toolframe-mcp-auth"
-version = "0.3.0"
+version = "0.3.1"
 source = { editable = "../toolframe-mcp-auth" }
 dependencies = [
     { name = "toolframe-sdk" },
@@ -666,7 +666,7 @@ dev = [
 
 [[package]]
 name = "toolframe-oidc-auth"
-version = "0.3.0"
+version = "0.3.1"
 source = { editable = "../toolframe-oidc-auth" }
 dependencies = [
     { name = "authlib" },
@@ -697,7 +697,7 @@ integration = [{ name = "fastmcp", specifier = ">=4,<5" }]
 
 [[package]]
 name = "toolframe-sdk"
-version = "0.4.0"
+version = "0.4.1"
 source = { editable = "../toolframe-sdk" }
 dependencies = [
     { name = "jsonschema" },
@@ -720,11 +720,12 @@ dev = [
     { name = "pytest", specifier = ">=8,<10" },
     { name = "pytest-asyncio", specifier = ">=1,<2" },
     { name = "ruff", specifier = ">=0.12,<1" },
+    { name = "tomlkit", specifier = ">=0.13,<1" },
 ]
 
 [[package]]
 name = "toolframe-sql-postgres"
-version = "0.2.0"
+version = "0.2.1"
 source = { editable = "." }
 dependencies = [
     { name = "pglast" },
