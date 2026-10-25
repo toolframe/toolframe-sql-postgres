@@ -11,7 +11,7 @@ license = "Apache-2.0"
 license-files = ["LICENSE", "NOTICE"]
 authors = [{ name = "byfb", email = "62798989+byfb@users.noreply.github.com" }]
 requires-python = ">=3.14"
-dependencies = ["toolframe-sdk>=0.4,<0.5", "psycopg[binary]>=3.3,<4", "pglast==8.4"]
+dependencies = ["toolframe-sdk>=0.4.0,<1", "psycopg[binary]>=3.3,<4", "pglast==8.4"]
 
 [project.urls]
 Homepage = "https://github.com/toolframe/toolframe-sql-postgres"
