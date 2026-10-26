@@ -1,89 +1,50 @@
-# Toolframe PostgreSQL storage
+<p align="center">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-banner-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="docs/assets/readme-banner-light.png">
+  <img src="docs/assets/readme-banner-light.png" alt="Toolframe PostgreSQL — Store Toolframe plugin data in PostgreSQL, with a separate schema for each owner." width="720">
+</picture>
+</p>
 
-`sql-postgres` stores Toolframe plugin data in PostgreSQL. Entry Register,
-Auth, MCP Auth and OIDC Auth use a separate schema per plugin inside one database
-per application environment. Database access is loaded **only from the runtime
-process environment**; credentials do not belong in `toolframe.toml`.
+# Toolframe PostgreSQL
 
-This release requires Toolframe SDK 0.4 and Core 0.7. Run one Core per
-application. Core 0.7 can separately store its management journal in a dedicated
-PostgreSQL database; SQLite remains the default. Configuration, private keys and
-artifacts still need a persistent application home. PostgreSQL storage does not
-make Core stateless or enable multiple replicas.
-Existing SQLite data is not imported. Plugins are trusted Python code.
+[![CI on main](https://github.com/toolframe/toolframe-sql-postgres/actions/workflows/ci.yml/badge.svg?branch=main&event=push)](https://github.com/toolframe/toolframe-sql-postgres/actions/workflows/ci.yml?query=branch%3Amain)
+
+Store Toolframe plugin data in PostgreSQL, with a separate schema for each owner.
+Use one database per application environment and provision access before enabling plugins.
 
 ## Quick start
 
-Use Python 3.14+, PostgreSQL 16+, and `pg_dump` / `pg_restore` with the **same major
-version** as the server. PostgreSQL 16 is the integration-test baseline.
-
-Install the host and provider CLI from PyPI:
+Use Python 3.14+, PostgreSQL 16+ and `pg_dump` / `pg_restore` matching the server's
+major version. Install the operator tools in a virtual environment:
 
 ```sh
-uv venv --python 3.14.7 .venv
-uv pip install --python .venv/bin/python \
-  toolframe-core==0.7.0 toolframe-sql-postgres==0.2.2
+uv venv --python 3.14
+uv pip install --python .venv/bin/python   'toolframe-core>=0.8,<1' toolframe-sql-postgres==0.2.2
 .venv/bin/toolframe-core --home ./app init
 ```
 
-Read `[application].id` from `app/toolframe.toml`. Supply an administrator DSN from
-your secret manager as `TOOLFRAME_POSTGRES_SETUP_DSN`. It is used only by setup.
-The CLI output file contains generated runtime credentials and must remain private.
+Continue with [provisioning](docs/setup.md): create the application database and
+store owners, configure the SQL binding, then launch Core with the generated
+private environment file. Setup needs administrator credentials; runtime workers
+use the generated roles. Credentials belong in the process environment.
 
-```sh
-.venv/bin/toolframe-postgres setup \
-  --application-id '<id from app/toolframe.toml>' \
-  --database toolframe_development \
-  --owner entry-register --owner auth --owner mcp-auth --owner oidc-auth \
-  --output ./app/.toolframe/postgres-environment.json
-unset TOOLFRAME_POSTGRES_SETUP_DSN
-```
+**Support:** one Core per application. Keep its application home, private keys
+and artifacts persistent. Existing SQLite records are not imported, and adding
+PostgreSQL does not make Core stateless or enable multiple replicas.
 
-Add the provider to `app/toolframe.toml`:
+## Guides
 
-```toml
-[plugins.sql-postgres]
-source = "pypi:toolframe-sql-postgres==0.2.2"
-enabled = true
+| I want to… | Start here |
+| --- | --- |
+| Provision an application | [Setup](docs/setup.md) |
+| Add stores, back up or restore | [Operations](docs/operations.md) |
+| Understand isolation and SQL | [Storage contract](docs/storage-contract.md) |
+| Review terminology and decisions | [Glossary](docs/glossary.md) · [Database boundary](docs/adr/0003-application-database-boundary.md) |
+| Contribute or run checks | [Contributing](CONTRIBUTING.md) · [Verification](docs/development.md) |
 
-[bindings]
-"toolframe.sql" = "sql-postgres"
-```
-
-This configuration sends every SQL consumer to PostgreSQL. Core builds with
-multiple SQL provider support can also run SQLite, using an explicit per-plugin
-override such as `"entry-register/sql" = "sql-sqlite"` in `[bindings]`.
-Choose bindings before initializing stores: changing a retained store's provider
-is rejected and does not copy data. Earlier Core builds require one enabled
-storage provider. The package version alone does not identify multiple-provider
-support; build the matching Core revision when using mixed providers.
-
-Install the matching business plugins
-before enabling them: Entry Register 0.4, Auth 0.3, MCP Auth 0.3 and OIDC Auth 0.3.
-Each store owner must be provisioned before Core starts its plugin.
-
-```sh
-.venv/bin/toolframe-postgres run \
-  --env-file ./app/.toolframe/postgres-environment.json -- \
-  .venv/bin/toolframe-core --home ./app serve
-```
-
-The `run` helper exports the private document as environment variables and replaces
-itself with Core. It removes setup/test administrator variables. Containers can
-inject the same runtime values directly; the provider does not read that file.
-
-- [Setup, environment and recovery](docs/operations.md)
-- [SQL and isolation contract](docs/storage-contract.md)
-- [Development and verification](docs/development.md)
-- [Domain glossary](docs/glossary.md) and [architecture decisions](docs/adr/0001-plugin-storage-boundary.md)
-
-For release validation and Trusted Publisher setup, see [releasing](docs/releasing.md).
+[Releases](https://github.com/toolframe/toolframe-sql-postgres/releases)
 
 ## License
 
-Apache-2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
-
-For development hooks and contribution rules, see [Contributing](CONTRIBUTING.md).
-
-Plugin dependencies allow compatible SDK 0.x updates from the declared minimum.
-See the [SDK compatibility policy](https://github.com/toolframe/toolframe-sdk/blob/main/docs/compatibility.md) for API guarantees and minimum/latest verification.
+[Apache 2.0](LICENSE), with [NOTICE](NOTICE).
