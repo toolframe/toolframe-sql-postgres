@@ -22,7 +22,7 @@ Install the host and provider CLI from PyPI:
 ```sh
 uv venv --python 3.14.7 .venv
 uv pip install --python .venv/bin/python \
-  toolframe-core==0.7.0 toolframe-sql-postgres==0.2.1
+  toolframe-core==0.7.0 toolframe-sql-postgres==0.2.2
 .venv/bin/toolframe-core --home ./app init
 ```
 
@@ -43,7 +43,7 @@ Add the provider to `app/toolframe.toml`:
 
 ```toml
 [plugins.sql-postgres]
-source = "pypi:toolframe-sql-postgres==0.2.1"
+source = "pypi:toolframe-sql-postgres==0.2.2"
 enabled = true
 
 [bindings]

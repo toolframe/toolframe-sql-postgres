@@ -59,7 +59,7 @@ After PyPI publication, verify a clean installation:
 
 ```sh
 uv venv --python 3.14.7 build/consumer
-uv pip install --python build/consumer/bin/python 'toolframe-sql-postgres==0.2.1'
+uv pip install --python build/consumer/bin/python 'toolframe-sql-postgres==0.2.2'
 uv pip check --python build/consumer/bin/python
 ```
 
